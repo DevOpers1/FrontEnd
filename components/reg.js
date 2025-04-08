@@ -1,14 +1,27 @@
 import React from 'react';
-import { StyleSheet, } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Main from './components/main'
-import Reg from './components/reg'
-
 
 const GymScan = () => {
     return (
-        <Main/>
-    );
+        <LinearGradient colors={['#B8BEE6', '#5C65A1']} style={styles.container}>
+            <Image source={require('../assets/LogoGymscan.png')} style={styles.logo} />
+            
+            <View style={styles.nameContainer}>
+                <Text style={styles.welcomeText}>Welcome to</Text>
+                <Text style={styles.appName}>GymScan</Text>
+            </View>
+            
+            <Text style={styles.lowerName}>Ваш планер тренувань у спортзалі</Text>
+            
+            <TouchableOpacity style={styles.googleBtn}>
+                <Image 
+                    source={{ uri: 'https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg' }}
+                    style={styles.googleBtnImg}
+                />
+                <Text style={styles.googleBtnText}>Continue with Google</Text>
+            </TouchableOpacity>
+        </LinearGradient>    );
 };
 
 const styles = StyleSheet.create({
