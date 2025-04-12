@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <h2>Увійти через Google</h2>
+
+    <div id="g_id_onload"
+         data-client_id="841904547104-njqlgo7gqhqgcac3g127sd97eu9q8873.apps.googleusercontent.com"
+         data-context="signin"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="signin_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+
+    <div id="user-info"></div>
+    <button id="logout-button" style="display:none;" onclick="logout()">Вийти</button>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("ID Token:", response.credential);
+
+            fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + response.credential)
+                .then(res => res.json())
+                .then(user => {
+                    document.getElementById("user-info").innerHTML = `
+                        <h3>Привіт, ${user.name}!</h3>
+                        <p>Email: ${user.email}</p>
+                        <img src="${user.picture}" width="100" />
+                    `;
+                    document.getElementById("logout-button").style.display = "block";
+                });
+        }
+
+        function logout() {
+            document.getElementById("user-info").innerHTML = "";
+            document.getElementById("logout-button").style.display = "none";
+            alert("Ви вийшли з акаунта!");
+        }
+    </script>
+</body>
+</html>
+
+
+
