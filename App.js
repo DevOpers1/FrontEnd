@@ -3,63 +3,17 @@ import { StyleSheet, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Main from './components/main'
 import Reg from './components/reg'
+import EquipmentCatalog from './components/equipment-catalog'
 
 
 const GymScan = () => {
     return (
-        <Main/>
+        <EquipmentCatalog/>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo: {
-        
-        marginBottom: 60,
-    },
-    nameContainer: {
-        alignItems: 'center',
-    },
-    welcomeText: {
-        fontSize: 22,
-        color: '#303030',
-        fontWeight: '800',
-    },
-    appName: {
-        fontSize: 48,
-        color: '#011936',
-        fontWeight: '800',
-    },
-    lowerName: {
-        fontSize: 15,
-        color: '#606060',
-        fontWeight: '600',
-        marginTop: 5,
-    },
-    googleBtn: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'black',
-        borderRadius: 10,
-        marginTop: 60,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-    },
-    googleBtnImg: {
-        width: 18,
-        height: 18,
-        marginRight: 10,
-    },
-    googleBtnText: {
-        fontSize: 15,
-        color: 'white',
-        fontWeight: 'bold',
-    },
+    
 });
 
 export default GymScan;

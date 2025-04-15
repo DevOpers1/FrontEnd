@@ -79,22 +79,19 @@ export default function GymScanScreen() {
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="home-outline" size={24} color="#62CDFA" />
-          <Text style={[styles.navText, { color: '#62CDFA' }]}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <MaterialCommunityIcons name="dumbbell" size={24} color="#000" />
-          <Text style={styles.navText}>Equipment</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.scanButton}>
           <Ionicons name="scan" size={28} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
-          <Text style={styles.navText}>Muscle</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="person-outline" size={24} color="#000" />
-          <Text style={styles.navText}>Profile</Text>
+          
         </TouchableOpacity>
       </View>
     </View>
@@ -296,10 +293,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 30,
     marginTop: -20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
     elevation: 5,
   },
 });
