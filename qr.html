@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Сканер</title>
+  <style>
+    #reader { width: 300px; margin: 20px auto; }
+    #result { text-align: center; font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align: center;">Скануй QR і переходь!</h2>
+  <div id="reader"></div>
+  <div id="result">Очікуємо сканування...</div>
+
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      console.log(`QR код: ${decodedText}`);
+      document.getElementById('result').innerText = `Знайдено: ${decodedText}`;
+      html5QrcodeScanner.clear();
+
+      // Якщо це посилання — перейти
+      if (decodedText.startsWith("http")) {
+        window.location.href = decodedText;
+      } else {
+        alert("Це не посилання: " + decodedText);
+      }
+    }
+
+    function onScanFailure(error) {
+      // Можна не показувати помилки
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      false
+    );
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+  </script>
+</body>
+</html>
