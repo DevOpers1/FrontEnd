@@ -2,11 +2,15 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
+
+
+
+
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const dateRange = [15, 16, 17, 18, 19, 20, 21];
 const activities = [1, 2, 3];
 
-export default function GymScanScreen() {
+export default function GymScanScreen({ navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -19,9 +23,9 @@ export default function GymScanScreen() {
         </View>
 
         <View style={styles.dateContainer}>
-            <svg style={styles.datePic} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#0F0F0F"></path> </g></svg>
-            <Text style={styles.dateLabel}>Monday, 15</Text>
-            <svg style={styles.datePic} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#0F0F0F"></path> </g></svg>
+          <Text style={styles.dateLabel}>{'<'}</Text>
+          <Text style={styles.dateLabel}>Monday, 15</Text>
+          <Text style={styles.dateLabel}>{'>'}</Text>
         </View>
 
         <View style={styles.dateSelector}>
@@ -77,23 +81,22 @@ export default function GymScanScreen() {
       </ScrollView>
 
       <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="home-outline" size={24} color="#62CDFA" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <MaterialCommunityIcons name="dumbbell" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.scanButton}>
-          <Ionicons name="scan" size={28} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="person-outline" size={24} color="#000" />
-          
-        </TouchableOpacity>
-      </View>
+              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
+                <Ionicons name="home-outline" size={24} color="#450CE2" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
+                <MaterialCommunityIcons name="dumbbell" size={24} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
+                <Ionicons name="scan" size={28} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <Ionicons name="person-outline" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
     </View>
   );
 }
@@ -131,6 +134,7 @@ const styles = StyleSheet.create({
 
   datePic:{
     width: 15,
+    height: 15,
   },
 
   dateLabel: {
@@ -277,8 +281,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#ddd',
     backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+
   },
   navItem: {
     alignItems: 'center',
@@ -293,6 +296,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 30,
     marginTop: -20,
-    elevation: 5,
   },
 });
+

@@ -13,66 +13,59 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Svg, Path } from 'react-native-svg';
 
-
+  
 export default function App({ navigation }) {
   return (
-
-    
-    
     <SafeAreaView style={styles.safeArea}>
-      
       <StatusBar barStyle="light-content" />
 
       {/* Заголовок з іконкою назад */}
       <View style={styles.header}>
-
+        <Text style={styles.title} onPress={() => navigation.goBack()}>{'<'}</Text>
         <Text style={styles.title}>Каталог тренажерів</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.container}>
         {/* Кардіотренажери */}
         <TouchableOpacity style={styles.card}
-        onPress={() => navigation.navigate('CatalogCardio')}>
+        onPress={() => navigation.navigate('Cardio1')}>
           <Image
             source={{ uri: 'https://i.imgur.com/NxF7V1J.png' }}
             style={styles.cardImage}
             resizeMode="contain"
           />
-          <Text style={styles.cardText}>Кардіотренажери</Text>
+          <Text style={styles.cardText}>Бігова доріжка</Text>
         </TouchableOpacity>
 
         {/* Силові тренажери */}
-        
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('CatalogPower')}>
+        <View style={styles.card}>
           <Image
             source={{ uri: 'https://i.imgur.com/EQwD8j7.png' }}
             style={styles.cardImage}
             resizeMode="contain"
           />
-          <Text style={styles.cardText}>Силові тренажери</Text>
-        </TouchableOpacity>
+          <Text style={styles.cardText}>Еліптичний тренажер</Text>
+        </View>
       </ScrollView>
 
       {/* Нижнє меню */}
       <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
-          <Ionicons name="home-outline" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
-          <MaterialCommunityIcons name="dumbbell" size={24} color="#450CE2" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
-          <Ionicons name="scan" size={28} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="person-outline" size={24} color="#000" />
-        </TouchableOpacity>
-      </View>
+              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
+                <Ionicons name="home-outline" size={24} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
+                <MaterialCommunityIcons name="dumbbell" size={24} color="#450CE2" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
+                <Ionicons name="scan" size={28} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <Ionicons name="person-outline" size={24} color="#000" />
+              </TouchableOpacity>
+            </View>
     </SafeAreaView>
   );
 }
@@ -99,6 +92,7 @@ const styles = StyleSheet.create({
   },
   titlePic: {
     width: 30,
+    height: 30,
     marginRight: 10,
   },
 
@@ -138,6 +132,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#ddd',
     backgroundColor: '#fff',
+
   },
   navItem: {
     alignItems: 'center',
@@ -152,5 +147,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 30,
     marginTop: -20,
+    elevation: 5,
   },
 });
