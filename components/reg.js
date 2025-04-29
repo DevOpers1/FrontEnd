@@ -38,7 +38,7 @@ const GymScan = ({navigation}) => {
             
             <Text style={styles.lowerName}>Ваш планер тренувань у спортзалі</Text>
             
-            <TouchableOpacity style={styles.googleBtn} onPress={() => navigation.navigate('Main')}>
+            <TouchableOpacity style={styles.googleBtn} onPress={() => navigation.navigate('RegUser')}>
                 <GoogleLogo style={styles.googleBtnImg}/>
                 <Text style={styles.googleBtnText}>Continue with Google</Text>
             </TouchableOpacity>

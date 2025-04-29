@@ -8,6 +8,8 @@ import EquipmentCatalogCardio from './components/equipment-catalog-cardio'
 import EquipmentCatalogPower from './components/equipment-catalog-power'
 import Cardio1 from './components/cardio1'
 import Scan from './components/scan'
+import RegUser from './components/reg-user'
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -22,6 +24,7 @@ const GymScan = () => {
                 screenOptions={{ headerShown: false }}
             >
                 <Stack.Screen name="Reg" component={Reg}/>
+                <Stack.Screen name="RegUser" component={RegUser}/>
                 <Stack.Screen name="Main" component={Main}/>
                 <Stack.Screen name="Catalog" component={EquipmentCatalog}/>
                 <Stack.Screen name="CatalogPower" component={EquipmentCatalogPower}/>
