@@ -62,7 +62,7 @@ export default function TreadmillScreen({ navigation }) {
                 <Ionicons name="scan" size={28} color="#000" />
               </TouchableOpacity>
               <TouchableOpacity style={styles.navItem}>
-                <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
+                <MaterialCommunityIcons name="calendar-text" size={24} color="#000" onPress={() => navigation.navigate('PlanGeneral')}/>
               </TouchableOpacity>
               <TouchableOpacity style={styles.navItem}>
                 <Ionicons name="person-outline" size={24} color="#000" />
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: 16,
-    zIndex: 20,
+    zIndex: 10
   },
   headerText: {
     fontSize: 28,
@@ -104,8 +104,6 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: '#392783',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
     padding: 16,
     paddingBottom: 40,
   },

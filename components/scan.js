@@ -35,7 +35,7 @@ export default function ScanScreen({ navigation }) {
                       <Ionicons name="scan" size={28} color="#450CE2" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.navItem}>
-                      <MaterialCommunityIcons name="arm-flex" size={24} color="#000" />
+                      <MaterialCommunityIcons name="calendar-text" size={24} color="#000" onPress={() => navigation.navigate('PlanGeneral')}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.navItem}>
                       <Ionicons name="person-outline" size={24} color="#000" />
