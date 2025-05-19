@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список тренажерів</title>
+</head>
+<body>
+    <h1>Список тренажерів</h1>
+    <ul>
+        {% for trainer in trainers %}
+            <li>{{ trainer.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

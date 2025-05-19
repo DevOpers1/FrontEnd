@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Створити користувача</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #333; }
+        form { background: #f9f9f9; padding: 20px; border-radius: 5px; }
+        label { display: inline-block; width: 150px; margin-bottom: 10px; }
+        input { padding: 8px; width: 250px; }
+        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #45a049; }
+        .message { padding: 10px; margin-top: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Користувача з email {{ email }} не знайдено</h1>
+        <p>Бажаєте створити нового користувача?</p>
+        
+        <form method="POST" action="{% url 'create-user' %}">
+            {% csrf_token %}
+            <div>
+                <label for="login">Логін:</label>
+                <input type="text" id="login" name="login" required>
+            </div>
+            <div>
+                <label for="email">Електронна пошта:</label>
+                <input type="email" id="email" name="email" value="{{ email }}" readonly>
+            </div>
+            <div>
+                <label for="age">Вік:</label>
+                <input type="number" id="age" name="age">
+            </div>
+            <div>
+                <label for="weight">Вага (кг):</label>
+                <input type="number" id="weight" name="weight" step="0.1">
+            </div>
+            <div>
+                <label for="height">Зріст (см):</label>
+                <input type="number" id="height" name="height">
+            </div>
+            <button type="submit">Створити</button>
+        </form>
+        
+        {% if messages %}
+        <div id="response" class="message">
+            {% for message in messages %}
+            <p style="color: {% if message.tags == 'success' %}green; background-color: #dff0d8{% else %}#a94442; background-color: #f2dede{% endif %}; padding: 10px; border-radius: 4px;">
+                {{ message }}
+            </p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <p><a href="{% url 'all-users' %}">Переглянути всіх користувачів</a></p>
+    </div>
+</body>
+</html>

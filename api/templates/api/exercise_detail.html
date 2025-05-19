@@ -1,0 +1,163 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ exercise.name|default:"Вправа" }} - Деталі</title>
+    <style>
+        :root {
+            --primary-color: #4a89dc;
+            --secondary-color: #3bafda;
+            --text-color: #434a54;
+            --light-gray: #f5f7fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-top: 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-top: 1.5rem;
+        }
+        
+        .video-container {
+            margin: 1.5rem 0;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--border-radius);
+        }
+        
+        .video-link {
+            display: inline-block;
+            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s;
+        }
+        
+        .video-link:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .no-data {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .exercise-details {
+            margin: 1.5rem 0;
+        }
+        
+        .detail-row {
+            margin-bottom: 1rem;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if exercise %}
+            <h1>{{ exercise.name }}</h1>
+            
+            <div class="exercise-details">
+                <div class="detail-row">
+                    <h2>Інструкція виконання</h2>
+                    <p>{% if exercise.instructions %}{{ exercise.instructions|linebreaks }}{% else %}<span class="no-data">Інструкції відсутні</span>{% endif %}</p>
+                </div>
+                
+                {% if exercise.muscles %}
+                <div class="detail-row">
+                    <span class="detail-label">М'язи:</span>
+                    <span>{{ exercise.muscles }}</span>
+                </div>
+                {% endif %}
+                
+                {% if exercise.purpose %}
+                <div class="detail-row">
+                    <span class="detail-label">Мета:</span>
+                    <span>{{ exercise.purpose }}</span>
+                </div>
+                {% endif %}
+           
+                {% if exercise.video_link %}
+                <div class="detail-row">
+                    <span class="detail-label">Відеоінструкція:</span>
+                    <a href="{{ exercise.video_link }}" class="video-link" target="_blank">Переглянути відео</a>
+                </div>
+            {% endif %}
+            
+        
+        {% else %}
+            <h1>Вправа не знайдена</h1>
+            <p class="no-data">На жаль, інформація про цю вправу недоступна.</p>
+        {% endif %}
+        
+        <a href="{% url 'exercise-list' %}" class="back-link">← Назад до списку вправ</a>
+    </div>
+</body>
+</html>

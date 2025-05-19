@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вправу не знайдено</title>
+</head>
+<body>
+    <h1>Вправу "{{ exercise_name }}" не знайдено</h1>
+    <p>Можливо, ви мали на увазі:</p>
+    <ul>
+        {% for ex in similar_exercises %}
+        <li><a href="{% url 'exercise-by-name' ex %}">{{ ex }}</a></li>
+        {% empty %}
+        <li>Схожих вправ не знайдено</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'exercise-list' %}">Переглянути всі вправи</a></p>
+</body>
+</html>

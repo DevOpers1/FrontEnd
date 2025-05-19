@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ trainer.name|default:"Тренажер" }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2, h3, h4 {
+            color: #34495e;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .no-data {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if trainer %}
+        <h1>{{ trainer.name }}</h1>
+    
+        {% if trainer.images %}
+            <img src="{{ trainer.images }}" alt="Зображення {{ trainer.name }}" style="max-width:100%; border-radius: 10px; margin-bottom: 20px;">
+        {% endif %}
+    
+        <h2>Опис тренажера</h2>
+        <p>{% if trainer.description %}{{ trainer.description }}{% else %}<span class="no-data">Опис відсутній</span>{% endif %}</p>
+    
+        <h3>Задіяні м'язи</h3>
+        <p>{% if trainer.muscle_activity %}{{ trainer.muscle_activity }}{% else %}<span class="no-data">М'язи слабо задіюються</span>{% endif %}</p>
+    
+        <h3>Тип тренажера</h3>
+        <p>{% if trainer.type %}{{ trainer.type }}{% else %}<span class="no-data">Тип не визначено</span>{% endif %}</p>
+    {% else %}
+        <h1>Тренажер не знайдено</h1>
+        <p class="no-data">На жаль, інформація про цей тренажер недоступна.</p>
+    {% endif %}
+    
+        <a href="{% url 'trainer-list' %}" class="back-link">← Назад до списку тренажерів</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Користувач {{ email }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        a { color: #0066cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Дані користувача</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Логін</th>
+                <th>Електронна пошта</th>
+                <th>Вік</th>
+                <th>Вага</th>
+                <th>Зріст</th>
+            </tr>
+            <tr>
+                <td>{{ user_id }}</td>
+                <td>{{ login }}</td>
+                <td>{{ email }}</td>
+                <td>{{ age }}</td>
+                <td>{{ weight }}</td>
+                <td>{{ height }}</td>
+            </tr>
+        </table>
+        <p><a href="{% url 'all-users' %}">Назад до списку користувачів</a></p>
+    </div>
+</body>
+</html>

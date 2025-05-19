@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Список користувачів</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Логін</th>
+        <th>Електронна пошта</th>
+        <th>Вік</th>
+        <th>Вага</th>
+        <th>Зріст</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.user_id }}</td>
+        <td>{{ user.login }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.age|default:"N/A" }}</td>
+        <td>{{ user.weight|default:"N/A" }}</td>
+        <td>{{ user.height|default:"N/A" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
