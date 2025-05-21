@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { format, startOfWeek, addDays, isSameDay } from 'date-fns';
+import uk from 'date-fns/locale/uk'; // українська локалізація
 
+const activities = [
+  {
+    name: 'Груди + Трицепс',
+    trainings: ['Жим лежачи', 'Французький жим', 'Віджимання на брусах'],
+  },
+  {
+    name: 'das',
+    trainings: ['asd'],
+  },
+];
+const today = new Date();
+const start = startOfWeek(today, { weekStartsOn: 1 }); // понеділок
 
-
-
-
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const dateRange = [15, 16, 17, 18, 19, 20, 21];
-const activities = [1, 2, 3];
+const weekDates = Array.from({ length: 7 }, (_, i) => addDays(start, i));
 
 export default function GymScanScreen({ navigation }) {
+  const quotes = [
+    "Ти не станеш сильнішим, сидячи на дивані.",
+    "Біль — це тимчасово. Слава — назавжди.",
+    "Кожне повторення — крок до нової версії тебе.",
+    "Ти не змагаєшся з іншими. Ти змагаєшся з учорашнім собою.",
+    "Втома — це не кінець. Це початок результату.",
+    "Якщо не зараз — то коли?",
+    "Твій мозок здається раніше, ніж твоє тіло. Не слухай його.",
+    "Кожна дія — це шанс на перемогу.",
+    "Твоє майбутнє — це вибір, який ти робиш сьогодні.",
+    "Рельєф не дають дарма — його виборюють.",
+    "Коли всі здаються — ти тільки починаєш."
+  ];
+
+  const [quote, setQuote] = useState('');
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    setQuote(quotes[randomIndex]);
+  }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
           <View style={styles.logoContainer}>
@@ -23,57 +53,50 @@ export default function GymScanScreen({ navigation }) {
         </View>
 
         <View style={styles.dateContainer}>
-          <Text style={styles.dateLabel}>{'<'}</Text>
           <Text style={styles.dateLabel}>Monday, 15</Text>
-          <Text style={styles.dateLabel}>{'>'}</Text>
         </View>
 
         <View style={styles.dateSelector}>
-          {dateRange.map((day, idx) => (
-            <TouchableOpacity key={idx} style={day === 15 ? styles.activeDate : styles.dateButton}>
-              <Text style={styles.dayText}>{days[idx]}</Text>
-              <Text style={styles.dayNumber}>{day}</Text>
-            </TouchableOpacity>
-          ))}
+          {weekDates.map((date, idx) => {
+            const isToday = isSameDay(date, today);
+            return (
+              <TouchableOpacity
+                key={idx}
+                style={isToday ? styles.activeDate : styles.dateButton}
+              >
+                <Text style={styles.dayText}>{format(date, 'EEE', { locale: uk })}</Text>
+                <Text style={styles.dayNumber}>{format(date, 'd')}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
 
-        <View style={styles.weeklyBox}>
-          <Text style={styles.weeklyTitle}>Weekly Completion</Text>
-          <View style={styles.weeklyCircles}>
-            {days.map((label, idx) => (
-              <View key={idx} style={styles.weeklyItem}>
-                <View style={styles.circle} />
-                <Text style={styles.weeklyDay}>{label}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
+
 
         <View style={styles.quoteBox}>
-          <Text style={styles.quoteText}>Мотиваційні цитати</Text>
+          <Text style={styles.quoteText}>{quote || "Натхнення в дорозі..."}</Text>
         </View>
 
+
         <View style={styles.activityHeader}>
-          <Text style={styles.activityTitle}>Today`s activity</Text>
-          <TouchableOpacity style={styles.addButton}>
-            <Ionicons name="add" size={24} color="#fff" />
+          <Text style={styles.activityTitle}>Планер тренувань</Text>
+          <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('MainPlanAdd')}>
+            <Ionicons name="add"  color="#fff" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.activityList}>
-          {activities.map((num) => (
-            <View key={num} style={styles.exerciseContainer}>
-              <Text style={styles.exerciseNumber}>{num}</Text>
+          {activities.map((activity, idx) => (
+            <View key={idx} style={styles.exerciseContainer}>
               <View style={styles.exerciseCard}>
-                <Text style={styles.exerciseTitle}>Назва вправи</Text>
-                <View style={styles.detailRow}>
-                  <Text style={styles.link}>категорія</Text>
-                  <Text style={styles.link}>м'язи</Text>
+                <View style={styles.exerciseTitleBox}>
+                  <Text style={styles.exerciseTitleText}>{activity.name}</Text>
                 </View>
-                <View style={styles.tagRow}>
-                  <Text style={styles.tag}>Кількість повторів</Text>
-                  <Text style={styles.tag}>Назва тренажера</Text>
-                </View>
+               <View style={styles.trainingRow}>
+                {activity.trainings.map((training, tIdx) => (
+                  <Text key ={tIdx} style={styles.trainingText}>{tIdx + 1}. {training}</Text>
+                ))}
+               </View>
               </View>
             </View>
           ))}
@@ -81,23 +104,23 @@ export default function GymScanScreen({ navigation }) {
       </ScrollView>
 
       <View style={styles.bottomNav}>
-              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
-                <Ionicons name="home-outline" size={24} color="#450CE2" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
-                <MaterialCommunityIcons name="dumbbell" size={24} color="#000" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
-                <Ionicons name="scan" size={28} color="#000" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navItem}>
-                <MaterialCommunityIcons name="calendar-text" size={24} color="#000" onPress={() => navigation.navigate('PlanGeneral')}/>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navItem}>
-                <Ionicons name="person-outline" size={24} color="#000" />
-              </TouchableOpacity>
-            </View>
-    </View>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
+          <Ionicons name="home-outline" size={24} color="#450CE2" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
+          <MaterialCommunityIcons name="dumbbell" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
+          <Ionicons name="scan" size={28} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <MaterialCommunityIcons name="calendar-text" size={24} color="#000" onPress={() => navigation.navigate('PlanGeneral')}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="person-outline" size={24} color="#000" />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -126,7 +149,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   dateContainer:{
-    flexDirection: 'row',
     alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'space-between',
@@ -148,30 +170,32 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   dayText: {
-    fontSize: 12,
+    fontSize: 9,
     textAlign: 'center',
-    color: '#555',
+    color: '#585555',
   },
   dayNumber: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#585555',
   },
   dateButton: {
     paddingVertical: 6,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#5400FD',
-    width: 44,
+    height: 44,
+    width: 40,
     alignItems: 'center',
   },
   activeDate: {
     paddingVertical: 6,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#5400FD',
     backgroundColor: '#DFCBFF',
-    width: 44,
+    height: 44,
+    width: 40,
     alignItems: 'center',
   },
   weeklyBox: {
@@ -206,15 +230,21 @@ const styles = StyleSheet.create({
   },
   quoteBox: {
     borderWidth: 1,
-    borderColor: '#f3a500',
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 16,
+    borderColor: '#FDFDFD',
+    backgroundColor: '#fff',
+    padding: 30,
+    borderRadius: 16,
+    marginBottom: 20,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
   },
   quoteText: {
-    color: '#4d2c91',
-    fontSize: 14,
+    color: '#35318B',
+    fontSize: 16,
     fontWeight: '500',
   },
   activityHeader: {
@@ -224,11 +254,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   activityTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '400',
   },
   addButton: {
-    backgroundColor: '#8d85c2',
+    width: 25,
+    height: 25,
+    backgroundColor: '#35318B',
     borderRadius: 20,
     padding: 6,
   },
@@ -245,14 +277,32 @@ const styles = StyleSheet.create({
   },
   exerciseCard: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: '#1a1a4d',
-    borderRadius: 12,
+    width: '100%',
     padding: 10,
+    borderWidth: 1,
+    borderColor: '#FDFDFD',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 16,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
   },
-  exerciseTitle: {
-    fontWeight: 'bold',
+  exerciseTitleBox: {
+    alignItems: 'center',
     marginBottom: 6,
+  },
+  exerciseTitleText: {
+    fontSize: 16,
+    fontWeight:600,
+    color: '#000',
+  },
+  trainingRow:{
+    alignItems: 'flex-start',
   },
   detailRow: {
     flexDirection: 'row',
