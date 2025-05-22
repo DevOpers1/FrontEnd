@@ -53,7 +53,9 @@ export default function GymScanScreen({ navigation }) {
         </View>
 
         <View style={styles.dateContainer}>
-          <Text style={styles.dateLabel}>Monday, 15</Text>
+          <Text style={styles.dateLabel}>
+            {format(today, 'EEEE, d', { locale: uk })}
+          </Text>
         </View>
 
         <View style={styles.dateSelector}>

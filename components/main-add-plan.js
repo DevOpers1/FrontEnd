@@ -54,8 +54,11 @@ export default function GymScanScreen({ navigation }) {
       <View style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={styles.backBtn} onPress={() => navigation.goBack()}>{'<'}</Text>
 
-        <Text style={styles.dayHeader}>Monday, {format(today, 'd')}</Text>
-
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateLabel}>
+            {format(today, 'EEEE, d', { locale: uk })}
+          </Text>
+        </View>
         <View style={styles.dateSelector}>
           {weekDates.map((date, idx) => {
             const isToday = isSameDay(date, today);
@@ -166,6 +169,23 @@ backBtn: {
     fontSize: 13,
     fontWeight: 'bold',
     color: '#585555',
+  },
+    dateContainer:{
+    alignItems: 'center',
+    textAlign: 'center',
+    justifyContent: 'space-between',
+},
+
+  datePic:{
+    width: 15,
+    height: 15,
+  },
+
+  dateLabel: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 6,
+    color: '#fff'
   },
   dateButton: {
     paddingVertical: 6,
