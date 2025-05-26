@@ -11,8 +11,8 @@ const activities = [
     trainings: ['Жим лежачи', 'Французький жим', 'Віджимання на брусах'],
   },
   {
-    name: 'das',
-    trainings: ['asd'],
+    name: 'соля лох',
+    trainings: ['і взагалі','вона' , 'чма' ],
   },
 ];
 const today = new Date();

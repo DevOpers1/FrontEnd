@@ -1,82 +1,142 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Video } from 'expo-av';
 
-export default function TreadmillScreen({ navigation }) {
+const { width } = Dimensions.get('window');
+
+export default function TreadmillScreen({ route, navigation }) {
+  const { trainer } = route.params;
+  const [exercise, setExercise] = useState(null);
+  const [showVideo, setShowVideo] = useState(false);
+  const animation = useRef(new Animated.Value(0)).current; // 0: image, 1: video
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/exercises/${trainer.trainer_id}/`)
+      .then(res => res.json())
+      .then(data => setExercise(data))
+      .catch(error => console.error('Error fetching exercise:', error));
+  }, [trainer.trainer_id]);
+
+  const toggleMedia = () => {
+    setShowVideo(!showVideo);
+    Animated.timing(animation, {
+      toValue: showVideo ? 0 : 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const translateXImage = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -width],
+  });
+
+  const translateXVideo = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [width, 0],
+  });
+
   return (
     <View style={styles.container}>
-      {/* Верхня частина зображення (нерухома) */}
       <View style={styles.fixedHeader}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.headerText}>{'<'}</Text>
         </TouchableOpacity>
-        <Image
-            source={{ uri: 'https://i.imgur.com/NxF7V1J.png' }}
-            style={styles.image}
-          resizeMode="contain"
-        />
+
+        <View style={styles.mediaContainer}>
+          <Animated.View style={[styles.slide, { transform: [{ translateX: translateXImage }] }]}>
+            <Image
+              source={{ uri: trainer.images }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </Animated.View>
+
+          {exercise?.video_link && (
+            <Animated.View style={[styles.slide, { transform: [{ translateX: translateXVideo }] }]}>
+              <Video
+                source={{ uri: exercise.video_link }}
+                useNativeControls
+                resizeMode="contain"
+                shouldPlay
+                style={styles.video}
+              />
+            </Animated.View>
+          )}
+        </View>
+
+        {exercise?.video_link && (
+          <TouchableOpacity style={styles.videoArrow} onPress={toggleMedia}>
+            <Ionicons
+              name={showVideo ? 'arrow-back-circle-outline' : 'play-circle-outline'}
+              size={36}
+              color="#000"
+            />
+          </TouchableOpacity>
+        )}
       </View>
 
-      {/* Прокручуваний контент */}
       <ScrollView style={styles.scrollContent}>
         <View style={styles.content}>
-          <Text style={styles.title}>Бігова доріжка</Text>
+          <Text style={styles.title}>{trainer.name}</Text>
 
           <View style={styles.tags}>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>квадрицепс</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>підколінні сухожилля</Text>
-            </View>
+            {trainer.muscle_activity.split(',').map((activity, index) => (
+              <View key={index} style={styles.tag}>
+                <Text style={styles.tagText}>{activity.trim()}</Text>
+              </View>
+            ))}
           </View>
 
-          <Text style={styles.sectionTitle}>Техніка виконання</Text>
+          <Text style={styles.sectionTitle}>Опис тренажера</Text>
           <View style={styles.list}>
-            <Text style={styles.techText}>1. Встаньте на бокові платформи, оберіть швидкість і почніть рух із ходьби.</Text>
-            <Text style={styles.techText}>2. Тримайте спину рівною, не нахиляйтесь вперед.</Text>
-            <Text style={styles.techText}>3. Приземляйтесь на середню частину стопи, а не на п’яти чи пальці.</Text>
-            <Text style={styles.techText}>4. Руки рухаються природно, уникайте опори на поручні.</Text>
+            <Text style={styles.techText}>{trainer.description}</Text>
           </View>
 
           <Text style={styles.sectionTitle}>Інструкція до вправи</Text>
           <View style={styles.instructionBox}>
-            <Text style={styles.instructionTitle}>Ходьба <Text style={styles.speedText}>(4–6 км/год)</Text></Text>
-            <Text style={styles.instrText}>1. Починайте з низької швидкості</Text>
-            <Text style={styles.instrText}>2. Тримайте спину прямо</Text>
-            <Text style={styles.instrText}>3. Руки природно рухаються.</Text>
+            <Text style={styles.instructionTitle}>{exercise?.name || 'Назва недоступна'}</Text>
+            <Text style={styles.instrText}>{exercise?.instructions || 'Немає інструкції'}</Text>
             <Text style={styles.goalTitle}>Основна мета:</Text>
-            <Text style={styles.goalText}>Легка розминка, покращення кровообігу, активація основних м’язів.</Text>
+            <Text style={styles.goalText}>{exercise?.purpose || 'Немає опису мети'}</Text>
           </View>
         </View>
       </ScrollView>
+
       <View style={styles.bottomNav}>
-              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
-                <Ionicons name="home-outline" size={24} color="#000" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
-                <MaterialCommunityIcons name="dumbbell" size={24} color="#450CE2" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
-                <Ionicons name="scan" size={28} color="#000" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navItem}>
-                <MaterialCommunityIcons name="calendar-text" size={24} color="#000" onPress={() => navigation.navigate('PlanGeneral')}/>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.navItem}>
-                <Ionicons name="person-outline" size={24} color="#000" />
-              </TouchableOpacity>
-            </View>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Main')}>
+          <Ionicons name="home-outline" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Catalog')}>
+          <MaterialCommunityIcons name="dumbbell" size={24} color="#450CE2" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.scanButton} onPress={() => navigation.navigate('Scan')}>
+          <Ionicons name="scan" size={28} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('PlanGeneral')}>
+          <MaterialCommunityIcons name="calendar-text" size={24} color="#000" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="person-outline" size={24} color="#000" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
+  container: { flex: 1, backgroundColor: '#fff' },
   fixedHeader: {
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -89,21 +149,45 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: 16,
-    zIndex: 10
+    zIndex: 20,
   },
   headerText: {
     fontSize: 28,
     color: '#000',
   },
-  image: {
-    width: '80%',
+  mediaContainer: {
+    width: '100%',
     height: 200,
+    overflow: 'hidden',
+    flexDirection: 'row',
+  },
+  slide: {
+    width: width,
+    height: 200,
+    position: 'absolute',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+  },
+  video: {
+    width: '100%',
+    height: 200,
+    backgroundColor: '#000',
+  },
+  videoArrow: {
+    position: 'absolute',
+    top: 100,
+    right: 20,
+    zIndex: 30,
   },
   scrollContent: {
     flex: 1,
   },
   content: {
     backgroundColor: '#392783',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     padding: 16,
     paddingBottom: 40,
   },
@@ -115,6 +199,7 @@ const styles = StyleSheet.create({
   },
   tags: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
     marginBottom: 20,
   },
@@ -123,6 +208,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
+    marginRight: 5,
+    marginBottom: 5,
   },
   tagText: {
     fontSize: 12,
@@ -144,7 +231,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   instrText: {
-    color: '#fffff',
+    color: '#000',
     fontSize: 14,
     marginBottom: 6,
   },
@@ -158,10 +245,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 6,
-  },
-  speedText: {
-    color: '#555',
-    fontSize: 12,
   },
   goalTitle: {
     color: '#392783',
@@ -183,11 +266,6 @@ const styles = StyleSheet.create({
   },
   navItem: {
     alignItems: 'center',
-  },
-  navText: {
-    fontSize: 12,
-    color: '#000',
-    marginTop: 2,
   },
   scanButton: {
     backgroundColor: '#fff',

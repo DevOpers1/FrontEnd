@@ -27,7 +27,7 @@ const GymScan = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="MainPlanAdd"
+                initialRouteName="Catalog"
                 screenOptions={{ headerShown: false }}
                 >
                 <Stack.Screen name="Reg" component={Reg}/>
