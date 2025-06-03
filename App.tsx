@@ -1,131 +1,63 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
+import Main from './components/main';
+import MainPlanAdd from './components/main-add-plan';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Reg from './components/reg';
+import EquipmentCatalog from './components/equipment-catalog';
+import EquipmentCatalogCardio from './components/equipment-catalog-cardio';
+import EquipmentCatalogPower from './components/equipment-catalog-power';
+import Cardio1 from './components/cardio1';
+import Scan from './components/scan';
+import ScanTest from './components/scan-test';
+import RegUser from './components/reg-user';
+import PlanGeneral from './components/plan-general';
+import PlanMan from './components/plan-men';
+import PlanWoman from './components/plan-woman';
+import Plan1 from './components/plan1';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// === DEEP LINKING CONFIGURATION ===
+const linking = {
+  prefixes: ['myapp://'], // 👈 Замініть на власний URI, якщо потрібно
+  config: {
+    screens: {
+      Cardio1: 'Cardio1', // 👈 Дозволяє відкривати через myapp://Cardio1?t_id=5
+      // (Інші екрани можна додати сюди також, якщо плануєте deep link далі)
+    },
+  },
+};
+
+const Stack = createNativeStackNavigator();
+
+const GymScan = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator
+        initialRouteName="Main"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Reg" component={Reg} />
+        <Stack.Screen name="RegUser" component={RegUser} />
+        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="MainPlanAdd" component={MainPlanAdd} />
+        <Stack.Screen name="Catalog" component={EquipmentCatalog} />
+        <Stack.Screen name="CatalogPower" component={EquipmentCatalogPower} />
+        <Stack.Screen name="CatalogCardio" component={EquipmentCatalogCardio} />
+        <Stack.Screen name="Cardio1" component={Cardio1} />
+        <Stack.Screen name="Scan" component={Scan} />
+        <Stack.Screen name="ScanTest" component={ScanTest} />
+        <Stack.Screen name="PlanGeneral" component={PlanGeneral} />
+        <Stack.Screen name="PlanMan" component={PlanMan} />
+        <Stack.Screen name="PlanWoman" component={PlanWoman} />
+        <Stack.Screen name="Plan1" component={Plan1} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const styles = StyleSheet.create({});
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+export default GymScan;

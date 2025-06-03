@@ -10,10 +10,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+                maven {
+            url("$rootDir/../node_modules/react-native/android")
+        }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
-        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("com.android.tools.build:gradle:8.8.2")  // Ваша версія плагіна Android Gradle
+        classpath("com.facebook.react:react-native-gradle-plugin:0.73.5")  // Переконайтесь, що версія співпадає
+
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
